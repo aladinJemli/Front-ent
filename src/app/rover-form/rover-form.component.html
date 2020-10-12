@@ -1,0 +1,90 @@
+<div class="container" [formGroup]="roverListForm">
+  <div>
+    <h2>Plateau Size</h2>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-xl-6">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">X</span>
+          </div>
+          <input type="text" formControlName="x" class="form-control" placeholder="Longueur" (keyup)="addNumber($event,1)" (keypress)="keyPress($event)">
+        </div>
+        <div>
+          <mat-error style="font-size: 10px;" *ngIf="alert[0]!=''">{{alert[0]}}</mat-error><br>
+          <app-field-error [control]="roverListForm.get('x')"></app-field-error>
+        </div>
+      </div>
+    <div class="col-sm-6 col-md-6 col-xl-6">
+      <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Y</span>
+      </div>
+      <input type="text"  formControlName="y" class="form-control" placeholder="Largeur" (keyup)="addNumber($event,2)" (keypress)="keyPress($event)">
+    </div> 
+    <div>
+      <mat-error style="font-size: 10px;" *ngIf="alert[1]!=''">{{alert[1]}}</mat-error><br>
+      <app-field-error [control]="roverListForm.get('y')"></app-field-error>
+    </div>
+    </div>
+  </div>
+  </div>
+    
+    <h2>Rover Informations</h2>
+    <div class="rover" formArrayName="roversList" *ngFor="let rover of roversList.controls; let i=index">
+      <div class="row">
+        <div class="col-sm-2 col-md-2 col-xl-2">
+          <div class="input-group mb-3" [formGroup]="rover">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">X</span>
+            </div>
+            <input type="text" formControlName="xPosition" class="form-control" placeholder="position" (keypress)="keyPress($event)">
+            <app-field-error [control]="roversList.at(i).get('xPosition')"></app-field-error>
+          </div>
+        </div>
+        <div class="col-sm-2 col-md-2 col-xl-2">
+          <div class="input-group mb-3" [formGroup]="rover">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Y</span>
+            </div>
+            <input type="text" class="form-control" formControlName="yPosition" placeholder="position" (keypress)="keyPress($event)">
+            <mat-error style="font-size: 10px;" *ngIf="alert[i+3]!=''">{{alert[i+3]}}</mat-error><br>
+          </div>
+        </div>
+        <div class="col-sm-2 col-md-2 col-xl-2" [formGroup]="rover">
+          <input type="text" class="form-control" formControlName="direction" placeholder="direction">
+          <app-field-error [control]="roversList.at(i).get('direction')"></app-field-error>
+        </div>
+        <div class="col-sm-3 col-md-3 col-xl-3" [formGroup]="rover">
+          <input type="text" class="form-control" formControlName="insrtuctions" placeholder="instruction">
+          <app-field-error [control]="roversList.at(i).get('insrtuctions')"></app-field-error>
+        </div>
+        <div class="icon col-sm-1 col-md-1 col-xl-1">
+          <mat-icon type="button" *ngIf="!this.execution[i] && this.roversList.at(i).valid && this.validPlateau" style="font-size: 36px; color: rgb(4, 172, 32);" (click)="runRover(rover,i)">play_circle_filled</mat-icon>
+          <mat-icon type="button" disabled="true" *ngIf="this.execution[i]" style="font-size: 36px; color: rgb(109, 109, 109);">play_circle_outline</mat-icon>
+        </div>
+        <div class="icon col-sm-1 col-md-1 col-xl-1">
+        <mat-icon type="button"  style="font-size: 36px; color: red;" (click)="deleteRover(i)">clear</mat-icon>
+      </div>
+    </div>
+  </div>
+  
+  <div class="rover">
+    <div class="row">
+      <div class="col-sm-10 col-md-10 col-xl-10">
+      </div>
+      <div class="col-sm-1 col-md-1 col-xl-1">
+        <mat-icon type="button" style="font-size: 36px; color: rgb(4, 172, 32);" (click)="addRove()">add_circle</mat-icon>
+      </div>
+      <div class="col-sm-1 col-md-1 col-xl-1">
+        <mat-icon type="button" style="font-size: 36px; color: red;" (click)="removeRover()">remove_circle</mat-icon>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<mat-card>
+  <h3>Results</h3>
+<p *ngFor="let rover of resultRover; let i = index">
+  {{resultRover[i]}}</p>
+</mat-card>
